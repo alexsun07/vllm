@@ -262,3 +262,8 @@ class DeepEPLLAll2AllManager(DeepEPAll2AllManagerBase):
         # in get_or_create must be updated.
         handle.set_num_sms(self.num_sms)
         return handle
+
+
+class MoriAll2AllManager(All2AllManagerBase):
+    def __init__(self, cpu_group):
+        super().__init__(cpu_group)

@@ -188,6 +188,11 @@ class FusedMoEParallelConfig:
     def use_deepep_ll_kernels(self):
         return (self.use_all2all_kernels
                 and envs.VLLM_ALL2ALL_BACKEND == "deepep_low_latency")
+    
+    @property
+    def use_mori_kernels(self):
+        return (self.use_all2all_kernels
+                and envs.VLLM_ALL2ALL_BACKEND == 'mori')
 
     @property
     def use_flashinfer_cutlass_kernels(self):

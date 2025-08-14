@@ -186,6 +186,8 @@ def rocm_aiter_fused_moe_impl(
     w2_scale: Optional[torch.Tensor] = None,
     a1_scale: Optional[torch.Tensor] = None,
     a2_scale: Optional[torch.Tensor] = None,
+    num_local_tokens: Optional[torch.Tensor] = None,
+    dtype: Optional[torch.dtype] = None,
 ) -> torch.Tensor:
     from aiter import ActivationType, QuantType
     from aiter.fused_moe import fused_moe
@@ -195,7 +197,7 @@ def rocm_aiter_fused_moe_impl(
 
     return fused_moe(hidden_states, w1, w2, topk_weight, topk_ids, expert_mask,
                      activation, quant_type, doweight_stage1, w1_scale,
-                     w2_scale, a1_scale, a2_scale)
+                     w2_scale, a1_scale, a2_scale, num_local_tokens=num_local_tokens, dtype=dtype)
 
 
 def rocm_aiter_fused_moe_fake(
@@ -212,6 +214,8 @@ def rocm_aiter_fused_moe_fake(
     w2_scale: Optional[torch.Tensor] = None,
     a1_scale: Optional[torch.Tensor] = None,
     a2_scale: Optional[torch.Tensor] = None,
+    num_local_tokens: Optional[torch.Tensor] = None,
+    dtype: Optional[torch.dtype] = None,
 ) -> torch.Tensor:
     return torch.empty_like(hidden_states)
 
@@ -316,7 +320,10 @@ def rocm_aiter_fused_experts(
         a1_scale: Optional[torch.Tensor] = None,
         a2_scale: Optional[torch.Tensor] = None,
         block_shape: Optional[list[int]] = None,
-        expert_map: Optional[torch.Tensor] = None) -> torch.Tensor:
+        expert_map: Optional[torch.Tensor] = None,
+        num_local_tokens: Optional[torch.Tensor] = None,
+        dtype: Optional[torch.dtype] = None,
+    ) -> torch.Tensor:
 
     activation_method = (ActivationMethod.SILU
                          if activation == "silu" else ActivationMethod.GELU)
@@ -391,6 +398,8 @@ def rocm_aiter_fused_experts(
             w2_scale=w2_scale,
             a1_scale=a1_scale,
             a2_scale=a2_scale,
+            num_local_tokens=num_local_tokens,
+            dtype=dtype,
             doweight_stage1=apply_router_weight_on_input)
 
 
