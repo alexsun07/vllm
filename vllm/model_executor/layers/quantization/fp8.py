@@ -1019,6 +1019,12 @@ class Fp8MoEMethod(FusedMoEMethodBase):
                 dispatch_ids,
                 dispatch_recv_token_num,
             ) = self.mori_op.dispatch(x, topk_weights, scale, topk_ids)
+        else:
+            dispatch_weights = topk_weights
+            dispatch_ids = topk_ids
+            dispatch_scale = layer.w13_input_scale
+            dispatch_recv_token_num = None
+            dtype = None
 
         if self.rocm_aiter_moe_enabled:
             from vllm.model_executor.layers.fused_moe.rocm_aiter_fused_moe import (  # noqa: E501
