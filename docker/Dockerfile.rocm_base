@@ -109,6 +109,8 @@ RUN mkdir -p /app/install && cp /app/aiter/dist/*.whl /app/install
 FROM base AS build_mori
 ARG MORI_BRANCH
 ARG MORI_REPO
+RUN --mount=type=bind,from=build_pytorch,src=/app/install/,target=/install \
+    pip install /install/*.whl
 RUN git clone ${MORI_REPO}
 RUN cd mori \
     && git checkout ${MORI_BRANCH} \
